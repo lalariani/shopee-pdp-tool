@@ -238,8 +238,8 @@ export default function App(){
     setSaving(true);
     try{
       const p={id:Date.now(),name:`${(info.name||DEF.name).slice(0,30)} — ${new Date().toLocaleDateString("id-ID")}`,media,info,logo,cards,mode,ts:new Date().toISOString()};
-      await savePreset(p);
-      setPresets(prev=>[p,...prev]);setActivePre(p.id);
+      const saved=await savePreset(p);
+      setPresets(prev=>[saved,...prev]);setActivePre(p.id);
     }catch(e){alert("Gagal save: "+e.message)}
     setSaving(false);
   };
