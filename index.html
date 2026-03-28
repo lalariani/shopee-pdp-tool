@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopee PDP Preview Tool</title>
+    <style>* { margin: 0; padding: 0; box-sizing: border-box; }</style>
+  </head>
+  <body><div id="root"></div><script type="module" src="/src/main.jsx"></script></body>
+</html>
+```
+
+---
+
+**STEP 7: Test dulu di lokal**
+
+Di Terminal (masih di folder `shopee-pdp-tool`):
+```
+npm run dev
+```
+Buka browser → `http://localhost:5173` — harusnya tool-nya muncul!
+
+---
+
+**STEP 8: Push ke GitHub**
+```
+git init
+git add .
+git commit -m "initial commit"
+```
+
+Lalu buka **github.com** → klik **"+"** → **"New repository"** → nama: `shopee-pdp-tool` → **Create** (jangan centang apapun)
+
+Setelah itu jalankan:
+```
+git remote add origin https://github.com/USERNAMEKAMU/shopee-pdp-tool.git
+git branch -M main
+git push -u origin main
