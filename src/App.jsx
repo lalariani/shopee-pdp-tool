@@ -205,13 +205,36 @@ function DesktopSearch({cards}){
 }
 
 // =================== MAIN APP ===================
+const PIN_CODE="9111";
+
+function PinGate({onUnlock}){
+  const[pin,setPin]=useState("");const[err,setErr]=useState(false);const iRef=useRef();
+  useEffect(()=>{iRef.current?.focus()},[]);
+  const submit=()=>{if(pin===PIN_CODE){sessionStorage.setItem("pdp_auth","1");onUnlock()}else{setErr(true);setPin("");iRef.current?.focus()}};
+  return(
+    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:99999,fontFamily:"-apple-system,sans-serif"}}>
+      <div style={{background:"#fff",borderRadius:16,padding:"40px 36px",width:320,textAlign:"center",boxShadow:"0 8px 40px rgba(0,0,0,0.2)"}}>
+        <div style={{fontSize:36,marginBottom:8}}>🔒</div>
+        <div style={{fontSize:18,fontWeight:700,color:"#222",marginBottom:4}}>Masukkan PIN</div>
+        <div style={{fontSize:12,color:"#999",marginBottom:20}}>Akses terbatas. Masukkan 4-digit PIN.</div>
+        <input ref={iRef} type="password" maxLength={4} value={pin} onChange={e=>{setErr(false);setPin(e.target.value.replace(/\D/g,""))}} onKeyDown={e=>{if(e.key==="Enter")submit()}} style={{width:"100%",padding:"12px 0",fontSize:28,textAlign:"center",letterSpacing:16,border:err?"2px solid #ee4d2d":"2px solid #e0e0e0",borderRadius:10,outline:"none",boxSizing:"border-box",fontFamily:"monospace",transition:"border-color 0.2s"}} placeholder="····"/>
+        {err&&<div style={{color:"#ee4d2d",fontSize:12,marginTop:8}}>PIN salah. Coba lagi.</div>}
+        <button onClick={submit} style={{marginTop:16,width:"100%",padding:"12px 0",background:"#ee4d2d",color:"#fff",border:"none",borderRadius:10,fontSize:14,fontWeight:600,cursor:"pointer"}}>Masuk</button>
+      </div>
+    </div>
+  );
+}
+
 export default function App(){
+  const[authed,setAuthed]=useState(()=>sessionStorage.getItem("pdp_auth")==="1");
   const[mode,setMode]=useState("pdp-mobile");
   const[media,setMedia]=useState([]);const[logo,setLogo]=useState(null);const[info,setInfo]=useState({});
   const[cards,setCards]=useState([]);const[editCard,setEditCard]=useState(null);
   const[presets,setPresets]=useState([]);const[loading,setLoading]=useState(true);const[tab,setTab]=useState("upload");const[drag,setDrag]=useState(false);const[activePre,setActivePre]=useState(null);
   const[fullscreen,setFullscreen]=useState(false);const[saving,setSaving]=useState(false);
   const fRef=useRef();const lRef=useRef();const cRef=useRef();
+
+  if(!authed) return <PinGate onUnlock={()=>setAuthed(true)}/>;
 
   const isSearch=mode.startsWith("search");
 
