@@ -234,8 +234,6 @@ export default function App(){
   const[fullscreen,setFullscreen]=useState(false);const[saving,setSaving]=useState(false);
   const fRef=useRef();const lRef=useRef();const cRef=useRef();
 
-  if(!authed) return <PinGate onUnlock={()=>setAuthed(true)}/>;
-
   const isSearch=mode.startsWith("search");
 
   useEffect(()=>{(async()=>{try{const p=await loadPresets();setPresets(p)}catch(e){console.error(e)}setLoading(false)})()},[]);
@@ -268,6 +266,8 @@ export default function App(){
   };
   const loadPre=p=>{setMedia(p.media||[]);setInfo(p.info||{});setLogo(p.logo||null);setCards(p.cards||[]);if(p.mode)setMode(p.mode);setActivePre(p.id);setTab("upload")};
   const delPre=async id=>{try{await deletePreset(id);setPresets(p=>p.filter(x=>x.id!==id))}catch(e){alert("Gagal hapus: "+e.message)}};
+
+  if(!authed) return <PinGate onUnlock={()=>setAuthed(true)}/>;
 
   const fields=[
     {label:"Nama Produk",k:"name",ph:DEF.name.slice(0,50)+"..."},{label:"Harga",k:"price",ph:"103400",half:true},{label:"Harga Asli",k:"originalPrice",ph:"139900",half:true},
